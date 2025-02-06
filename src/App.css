@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@layer base {
+    * {
+      @apply text-black;
+    }
+    h1{
+      @apply font-bold;
+      @apply text-xl;
+    }
+    button {
+        @apply cursor-pointer;
+    }
+    body {
+        overflow-y: scroll;
+      }
+    
+  }
+
+
+@theme{
+    --color-primary: #2147A6;
+    --color-secondary: #102967;
+}

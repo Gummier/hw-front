@@ -1,0 +1,25 @@
+/* Apply hover effect on each day cell */
+.toastui-calendar-daygrid-cell:hover {
+    background-color: rgba(0, 150, 255, 0.2) !important;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+.toastui-calendar-daygrid-cell:active {
+    background-color: rgb(6, 101, 168) !important;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.toastui-calendar-popup-container {
+    color: black !important;  /* Ensure text is black */
+}
+
+/* Target title inside the popup */
+.toastui-calendar-popup-detail {
+    color: black !important;
+}
+
+/* Ensure buttons and other elements are visible */
+.toastui-calendar-popup-container button {
+    color: black !important;
+}
