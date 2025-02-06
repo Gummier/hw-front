@@ -1,6 +1,22 @@
-export default function BookingForm() {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+import { useState } from "react";
+import BookingForm from './BookingForm'
+export default function Popup() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="flex flex-col items-center justify-center ">
+      <button
+        onClick={() => setIsOpen(true)}
+        className="bg-primary text-white py-2 px-4 rounded-md transform transition duration-300 ease-in-out hover:scale-105 hover:translate-y-1'"
+      >
+        Add New Booking
+      </button>
+
+      {isOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-transparent backdrop-blur-sm">
+
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <div className="flex justify-center items-center  bg-gray-100">
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-4xl">
           {/* Form Grid */}
           <div className="grid grid-cols-2 gap-6">
@@ -47,7 +63,18 @@ export default function BookingForm() {
   
           
         </div>
-      </div>
-    );
-  }
-  
+      </div >
+            <div className="flex justify-between">
+                <button onClick={() => setIsOpen(false)}className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg">
+                Close
+                </button>
+                <button onClick={() => setIsOpen(false)}className="mt-4 px-4 py-2 bg-green-500 text-white rounded-lg">
+                Confirm Book
+                </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
