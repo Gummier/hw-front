@@ -1,5 +1,5 @@
 import React , {useState} from 'react'
-import BookingDetail from './BookingDetail';
+import BookingDetail from './Bookings/BookingDetail';
 import { useNavigate } from 'react-router';
 import { useLocation } from "react-router-dom";
 import TimeTable from './TimeTable';

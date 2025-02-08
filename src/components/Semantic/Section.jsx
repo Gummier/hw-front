@@ -1,10 +1,9 @@
 import React, {useEffect, useState } from 'react'
-import MyCalendar from './MyCalendar'
-import Dropdown from './Dropdown'
-import Schedule from './Schedule'
-import '../App.css'
+import MyCalendar from '../MyCalendar'
+import Dropdown from '../Dropdown'
+import Schedule from '../Schedule'
 import { useNavigate } from 'react-router-dom'
-import Banner from '../assets/banner_sit_hw.png'
+import Banner from '../../assets/banner_sit_hw.png'
 function Section() {
 
     const navigate = useNavigate();
@@ -52,8 +51,8 @@ function Section() {
                 { label: "SIT Building (1st Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
                 { label: "SIT Building (3st Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
                 { label: "SIT Building (4st Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
-            ]} setLabel={setLabel}
-            setSubLabel={setSubLabel}/>
+                ]} setLabel={setLabel}
+                setSubLabel={setSubLabel}/>
             </div>
         </div>
         <div className='max-w-5xl bg-white mx-auto p-4'>

@@ -1,9 +1,9 @@
 import React from 'react'
-import Nav from '../components/Nav'
+import Nav from '../components/Semantic/Nav'
 import DetailHeader from '../components/DetailHeader'
 import { useNavigate } from 'react-router'
 import { useLocation } from "react-router-dom";
-import Popup from '../components/Popup'
+import Popup from '../components/Popups/Popup'
 function Details() {
     const navigate = useNavigate();
      const location = useLocation();
@@ -21,6 +21,7 @@ function Details() {
         <div className='flex w-screen justify-center mt-16'>
         <Popup initialRoom={room} initialBuilding={building} selectedDate={selectedDate}/>
         </div>
+        
     </div>
   )
 }

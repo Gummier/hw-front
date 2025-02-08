@@ -4,7 +4,7 @@ import "@toast-ui/calendar/dist/toastui-calendar.min.css";
 import "./CustomCalendar.css";
 import "../index.css";
 import { useNavigate } from "react-router-dom";
-import { useBooking } from './BookingContext';
+import { useBooking } from './Bookings/BookingContext';
 import axios from "axios";
 
 const MyCalendar = () => {  

@@ -1,6 +1,6 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import React, {useState} from "react";
-import { useBooking } from "./BookingContext";
+import { useBooking } from "./Bookings/BookingContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Dropdown({ items }) {

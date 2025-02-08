@@ -1,6 +1,5 @@
 import React from 'react'
-import Logo from '../assets/only_SIT_logo.png'
-import '../App.css'
+import Logo from '../../assets/only_SIT_logo.png'
 import { Link } from 'react-router'
 function Nav() {
   return (
@@ -11,8 +10,8 @@ function Nav() {
         <h3 className='font-semibold'>Booking System</h3>
       </div>
       <div className='flex px-10'>
-        <Link to="/" className='px-10 hover:scale-125  hover:transition duration-400 ease-in-out'>Home</Link>
-        <Link to="/report" className='px-10 hover:scale-125  hover:transition duration-400 ease-in-out'>Report</Link>
+        <Link to="/" className='px-10 hover:scale-125  hover:transition duration-400 ease-in-out active:scale-100'>Home</Link>
+        <Link to="/report" className='px-10 hover:scale-125  hover:transition duration-400 ease-in-out active:scale-100'>Report</Link>
       </div>
     </div>
   )

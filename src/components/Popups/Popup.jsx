@@ -1,28 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
-import SingleDropdown from "./SingleDropdown";
-import PopupStatus from "./PopupStatus";
-import PopupConfirmed from "./PopupConfirm";
+import SingleDropdown from "../SingleDropdown";
 import {motion} from 'framer-motion'
-export default function PopupEdit({ bookingId }) {
+import PopupConfirmed from "./PopupConfirm";
+export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    bookingName: "",
-    bookingDESC: "",
-    startTime: "",
-    endTime: "",
-    createdBy: "",
-    modifiedBy: "",
-    type: "",
-    repeatType: "",
-    repeatDay: "",
-    repeatEndDate: "",
-    buildings_buildingId: "",
-    rooms: "",
-  });
+  const repeat_type = ["Daily","Weekly",'Monthly'];
+  const [open,setOpen] = useState(false);
 
-  const repeat_type = ["Daily", "Weekly", "Monthly"];
   const timezone = [
     "8:30", "9:00", "9:30", "10:00", "10:30", "11:00",
     "11:30", "12:00", "12:30", "13:00", "13:30", "14:00",
@@ -41,26 +26,22 @@ export default function PopupEdit({ bookingId }) {
   ];
   const rooms = ["Room 1", "Room 2", "Room 3"];
 
-  // Fetch booking details when popup is opened
-  const fetchBookingDetails = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`https://api.example.com/bookings/${bookingId}`);
-      if (response.status === 200) {
-        setFormData(response.data); // Populate formData with the fetched booking details
-      }
-    } catch (error) {
-      console.error("Error fetching booking details:", error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Open popup and fetch booking details
-  const openPopup = () => {
-    setIsOpen(true);
-    fetchBookingDetails();
-  };
+  const [formData, setFormData] = useState({
+    bookingId: "",
+    bookingName: "",
+    bookingDESC: "",
+    startTime: "2025-02-07T16:32:57.541Z",
+    endTime: "2025-02-07T16:32:57.541Z",
+    createdBy: "string",
+    modifiedBy: "",
+    type: "Daily",
+    repeatType: "EVERY_DAY",
+    repeatDay: "MONDAY",
+    repeatEndDate: "2025-08-07",
+    buildings_buildingId: initialBuilding || "",
+    rooms: initialRoom || "",
+  });
+  // Create a reusable function for the API call
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -70,49 +51,49 @@ export default function PopupEdit({ bookingId }) {
     }));
   };
 
+  
   const handleSubmit = async () => {
     try {
-      const response = await axios.put(
-        `https://api.example.com/bookings/${bookingId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post("https://jsonplaceholder.typicode.com/posts", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      if (response.status === 200) {
-        console.log("Booking updated successfully:", response.data);
-        setIsOpen(false); // Close popup on success
+      if (response.status === 201) {
+        console.log("Booking added successfully:", response.data);
+        setOpen(true);
+        // Handle success (e.g., clear the form or show a success message)
       }
     } catch (error) {
-      console.error("Error updating booking:", error.response?.data || error.message);
+      console.error("Error adding booking:", error.response?.data || error.message);
+      // Handle error (e.g., show an error message to the user)
     }
   };
+
 
   return (
     <div className="flex flex-col items-center justify-center overflow-hidden">
       <button
-        onClick={openPopup}
+        onClick={() => setIsOpen(true)}
         className="bg-primary text-white py-2 px-4 rounded-md transform transition duration-300 ease-in-out hover:scale-105 hover:translate-y-1"
       >
-        Edit Booking
+        Add New Booking
       </button>
 
       {isOpen && (
-        
-          <motion.div
-        className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        // Close popup on backdrop click
-        >
-          
+        <motion.div
+                className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                // Close popup on backdrop click
+                >
+                    
+                
           <div className="bg-white p-6 rounded-lg shadow-lg">
           <form className="grid grid-cols-2 gap-4">
-          <button className="absolute top-[180px] right-[530px]  right text-2xl" onClick={() => setIsOpen(false)}>
+              <button className="absolute top-[180px] right-[530px]  right text-2xl" onClick={() => setIsOpen(false)}>
               ✖
             </button>
             <div className="flex flex-col">
@@ -221,13 +202,46 @@ export default function PopupEdit({ bookingId }) {
             </div >
             
             </form>
-              <div className="flex justify-center  w-full">
-                <PopupStatus/>
-                <PopupConfirmed/>
+              <div className="flex justify-center w-full">
+               
+                <button
+                  onClick={handleSubmit}
+                  
+                  className="mt-4 px-4 py-2 bg-white text-green-button shadow-3xl rounded-lg font-semibold hover:bg-green-hover hover:scale-105 hover:transition duration-700 ease-in-out "
+                >
+                  Confirm
+                </button>
+                
+                {open&& (<motion.div
+                            className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            // Close popup on backdrop click
+                            >
+                                
+                            <div class="bg-white rounded-2xl shadow-lg p-6 w-96 relative text-center">
+                              {/* <!-- Close Button --> */}
+                              <button class="absolute top-4 right-4 text-blue-900 text-xl font-bold" onClick={() => setOpen(false)}>
+                                &times;
+                              </button>
+                              {/* <!-- Title --> */}
+                              <h2 class="text-2xl font-semibold text-blue-900">Booking Confirmed!</h2>
+                              {/* <!-- Subtitle --> */}
+                              <p class="text-gray-700 mt-4">
+                                Your room booking has been successfully completed.
+                              </p>
+                              
+                              <div class="mt-6">
+                                
+                              </div>
+                            </div>
+                            </motion.div>) }
+                
               </div>
           </div>
-          </motion.div>
-
+          
+        </motion.div>
       )}
     </div>
   );

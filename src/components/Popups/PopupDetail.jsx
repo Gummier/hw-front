@@ -1,4 +1,4 @@
-import BookingDetail from "./BookingDetail";
+import BookingDetail from "../Bookings/BookingDetail";
 import { useLocation } from "react-router-dom";
 import PopupEdit from "./PopupEdit";
 import {motion} from 'framer-motion'

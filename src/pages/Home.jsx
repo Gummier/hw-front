@@ -1,8 +1,8 @@
 import React, { useEffect  } from 'react'
-import Nav from '../components/Nav'
+import Nav from '../components/Semantic/Nav'
 import MyCalendar from '../components/MyCalendar'
-import Section from '../components/Section'
-import Footer from '../components/Footer'
+import Section from '../components/Semantic/Section'
+import Footer from '../components/Semantic/Footer'
 import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Banner from '../assets/banner_sit_hw.png';

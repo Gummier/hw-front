@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import PopupDetail from "./PopupDetail";
+import PopupDetail from "./Popups/PopupDetail";
 import axios from "axios";
 
 const TimeTable = () => {

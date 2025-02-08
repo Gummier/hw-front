@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
-import Nav from '../components/Nav'
-import Footer from '../components/Footer'
-
+import Nav from '../components/Semantic/Nav'
+import Footer from '../components/Semantic/Footer'
+import Dropdown from '../components/Dropdown';
 import { CalendarIcon } from "lucide-react";
 function Report() {
   const [matchType, setMatchType] = useState("Lecturer");

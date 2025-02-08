@@ -3,13 +3,13 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import MyCalendar from './components/MyCalendar'
-import Nav from './components/Nav.jsx'
-import Section from './components/Section.jsx'
-import Footer from './components/Footer.jsx'
+import Nav from './components/Semantic/Nav.jsx'
+import Section from './components/Semantic/Section.jsx'
+import Footer from './components/Semantic/Footer.jsx'
 import DetailHeader from './components/DetailHeader.jsx'
 import TimeTable from './components/TimeTable.jsx'
-import BookingDetail from './components/BookingDetail.jsx'
-import BookingForm from './components/BookingForm.jsx'
+import BookingDetail from './components/Bookings/BookingDetail.jsx'
+import BookingForm from './components/Bookings/BookingForm.jsx'
 function App() {
   const [count, setCount] = useState(0)
   const exampleBookings = {

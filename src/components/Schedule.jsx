@@ -1,5 +1,5 @@
 import React, {useState , useEffect} from 'react'
-import { useBooking } from './BookingContext'
+import { useBooking } from './Bookings/BookingContext'
 function Schedule() {
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const { bookings } = useBooking(); // Assume bookings come from context
