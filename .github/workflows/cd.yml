@@ -60,13 +60,3 @@ jobs:
       - name: Upload artifacts to server
         run: |
           lftp -d -e "set sftp:auto-confirm yes; set net:timeout 60; set net:max-retries 2; set net:reconnect-interval-base 5; debug 3; open '$REMOTE_SFTP_LOGIN'; mirror -v --reverse --delete ./artifact ~/hippo-frontend; bye"
-
-      - name: Serve Frontend
-        run: |
-          sshpass -p "$REMOTE_SSH_PASSWORD" ssh "$REMOTE_SSH_ARGS" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "
-          export NVM_DIR=\$HOME/.nvm &&
-          [ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\" &&
-          pm2 describe frontend || pm2 stop frontend || true &&
-          pm2 delete frontend || true &&
-          pm2 serve ~/hippo-frontend --name frontend --port 4173
-          "
