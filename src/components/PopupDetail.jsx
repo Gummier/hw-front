@@ -1,6 +1,7 @@
 import BookingDetail from "./BookingDetail";
 import { useLocation } from "react-router-dom";
 import PopupEdit from "./PopupEdit";
+import {motion} from 'framer-motion'
 function PopupDetail({ isOpen, onClose , bookingDetails}) {
   if (!isOpen) return null; // Don't render if closed
     const location = useLocation();
@@ -10,7 +11,16 @@ function PopupDetail({ isOpen, onClose , bookingDetails}) {
         room: null,
       };  
   return (
+    
     <div className="fixed inset-0 flex items-center justify-center bg-transparent bg-opacity-30 backdrop-blur-sm z-50">
+      <motion.div
+            className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            // Close popup on backdrop click
+            >
+
       {/* Popup Box */}
       <div className="bg-white rounded-lg shadow-lg w-[70vw] max-w-3xl p-6 relative">
         {/* Close Button */}
@@ -52,6 +62,7 @@ function PopupDetail({ isOpen, onClose , bookingDetails}) {
             <PopupEdit bookingId={[]}/>
         </div>
       </div>
+          </motion.div>
     </div>
   );
 }

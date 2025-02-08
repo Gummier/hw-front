@@ -36,7 +36,7 @@ const TimeTable = () => {
         },
         {
           bookingName: "Project Discussion",
-          startTime: "2025-02-03T09:00:00",
+          startTime: "2025-02-03T14:00:00",
           endTime: "2025-02-03T15:00:00",
           building: "LX Building (10th Floor)",
           room: "Room 2",
@@ -51,7 +51,7 @@ const TimeTable = () => {
         {
           bookingName: "Project Discussion",
           startTime: "2025-02-11T10:00:00",
-          endTime: "2025-02-11T11:00:00",
+          endTime: "2025-02-11T12:00:00",
           building: "LX Building (10th Floor)",
           room: "Room 2",
         },
@@ -63,7 +63,7 @@ const TimeTable = () => {
           room: "Room 2",
         },
       ];
-  
+
       const parsedDate = new Date(selectedDate);
       const selectedDateFormatted = parsedDate.toLocaleDateString("en-CA"); // Outputs in "yyyy-MM-dd" format
 
@@ -95,7 +95,9 @@ const TimeTable = () => {
     } catch (error) {
       console.error("Error fetching bookings:", error.message);
     }
-  };
+    };
+
+
   useEffect(() => {
     console.log("Bookings updated:", bookings);
   }, [bookings]);
@@ -107,6 +109,7 @@ const TimeTable = () => {
       console.warn("Required data missing: selectedDate or building");
     }
   }, [selectedDate, building , room]);
+
 
 
 
@@ -135,7 +138,76 @@ const TimeTable = () => {
       console.error("Error fetching booking details:", error.message);
     }
   };
+  const calculateRowSpan = (startTime, endTime) => {
+    const startIndex = timeSlots.findIndex((slot) => slot === startTime);
+    const endIndex = timeSlots.findIndex((slot) => slot === endTime) + 1; // Add 1 to include the end time
+    return endIndex - startIndex;
+  };
 
+  const renderRows = () => {
+    const occupiedSlots = new Set(); // Track already occupied time slots
+    const rows = [];
+  
+    timeSlots.forEach((time) => {
+      const booking = Object.keys(bookings).find((startTime) => startTime === time);
+  
+      if (occupiedSlots.has(time)) {
+        // Add only the plain Time column for occupied slots
+        rows.push(
+          <tr key={time} className="border">
+            <td className="border w-20 py-2 text-center">{time}</td>
+          </tr>
+        );
+      } else if (booking) {
+        const bookingDetails = bookings[time];
+        const startTime = time;
+        const endTime = new Date(bookingDetails.details.endTime).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        });
+  
+        // Calculate rowSpan
+        const rowSpan = calculateRowSpan(startTime, endTime);
+  
+        // Add booking row
+        rows.push(
+          <tr key={time} className="border">
+            <td className="border w-20 py-2 text-center">{time}</td>
+            <td
+              className={`border px-4 py-2 text-center cursor-pointer hover:bg-green-200 hover:transition duration-500 ease-in-out ${bookingDetails.color || ""}`}
+              rowSpan={rowSpan}
+              onClick={() => {
+                setSelectedBooking(bookingDetails.details);
+                setPopupOpen(true);
+              }}
+            >
+              {bookingDetails.text}
+            </td>
+          </tr>
+        );
+  
+        // Mark slots covered by the booking as occupied
+        const startIndex = timeSlots.indexOf(startTime);
+        const endIndex = timeSlots.indexOf(endTime);
+        for (let i = startIndex; i <= endIndex; i++) {
+          occupiedSlots.add(timeSlots[i]);
+        }
+      } else {
+        // Add an empty row for free time slots
+        rows.push(
+          <tr key={time} className="border">
+            <td className="border w-20 py-2 text-center">{time}</td>
+            <td className="border px-4 py-2"></td>
+          </tr>
+        );
+      }
+    });
+  
+    return rows;
+  };
+  
+  
 
   return (
     <div className="max-w-6xl mx-auto p-4 overflow-y-auto max-h-[500px] rounded-lg">
@@ -153,7 +225,7 @@ const TimeTable = () => {
           </tr>
         </thead>
         <tbody>
-          {timeSlots.map((time, index) => {
+          {/* {timeSlots.map((time, index) => {
             const booking = bookings[time];
             return (
               <tr
@@ -162,7 +234,7 @@ const TimeTable = () => {
                 onClick={() => {
                   if (booking) {
                     setSelectedBooking(booking.details);
-                    setPopupOpen(true);
+                    setPopupOpen(true); 
                   }
                 }}
               >
@@ -176,7 +248,8 @@ const TimeTable = () => {
                 </td>
               </tr>
             );
-          })}
+          })} */}
+          {renderRows()}
         </tbody>
       </table>
       <PopupDetail isOpen={isPopupOpen} bookingDetails={selectedBooking} onClose={() => setPopupOpen(false)} />
