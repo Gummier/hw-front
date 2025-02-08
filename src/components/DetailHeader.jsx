@@ -29,7 +29,7 @@ function DetailHeader() {
             ←
             </button>
             <div className="flex flex-col">
-            <span className="text-sm text-gray-700">Sunday</span>
+            <span className="text-sm text-gray-700">{new Date(selectedDate).toLocaleDateString("en-US", {weekday: "long",})}</span>
             <span className="text-xl font-bold text-primary">{selectedDate}</span>
             </div>
         <div className="ml-36 h-10 w-[1px] bg-gray-400"></div>

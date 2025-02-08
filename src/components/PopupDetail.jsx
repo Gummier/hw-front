@@ -1,5 +1,6 @@
 import BookingDetail from "./BookingDetail";
 import { useLocation } from "react-router-dom";
+import PopupEdit from "./PopupEdit";
 function PopupDetail({ isOpen, onClose , bookingDetails}) {
   if (!isOpen) return null; // Don't render if closed
     const location = useLocation();
@@ -28,15 +29,15 @@ function PopupDetail({ isOpen, onClose , bookingDetails}) {
             <div className="ml-8 h-10 w-[1px] bg-gray-400"></div>
             <div className="flex space-x-10">
               <div className="flex flex-col">
-                <span className="text-sm text-gray-700">{bookingDetails?.building || "N/A"}</span>
+                <span className="text-sm text-gray-700">Building</span>
                 <span className="text-primary font-semibold">
-                 {building}
+                {bookingDetails?.building || "N/A"}
                 </span>
               </div>
               <div className="flex flex-col">
-                <span className="text-sm text-gray-700">{bookingDetails?.room || "N/A"}</span>
+                <span className="text-sm text-gray-700">Room</span>
                 <span className="text-primary font-semibold">
-                  {room}
+                {bookingDetails?.room || "N/A"}
                 </span>
               </div>
             </div>
@@ -45,7 +46,10 @@ function PopupDetail({ isOpen, onClose , bookingDetails}) {
 
         {/* Scrollable Content */}
         <div className="max-h-[60vh] overflow-y-auto p-4">
-          <BookingDetail bookingDetails ={ bookingDetails} />
+          <BookingDetail booking ={ bookingDetails } />
+        </div>
+        <div className="flex justify-center">
+            <PopupEdit bookingId={[]}/>
         </div>
       </div>
     </div>

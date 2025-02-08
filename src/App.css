@@ -23,4 +23,8 @@
 @theme{
     --color-primary: #2147A6;
     --color-secondary: #102967;
+    --color-green-button: #0F783B;
+    --color-green-hover: #80B498;
+    --color-hover: #5E78B9;
+    --shadow-3xl: 0px 2px 12px rgba(0, 0, 0, 0.5);
 }

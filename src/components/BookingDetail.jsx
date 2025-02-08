@@ -10,10 +10,10 @@ if(!booking) return null
         </header>
         <hr />
         <section className='my-10 '>
+        <h1 className='text-primary'>Description</h1>
+            <span>{booking.bookingName}</span>
             <h1 className='text-primary'>Instructor</h1>
-            <span>Hippo</span>
-            <h1 className='text-primary'>Confirmation Status</h1>
-            <span>Hippo</span>
+            <span>Test</span>
             <h1 className='text-primary'>Start time</h1>
             <span>Hippo</span>
             <h1 className='text-primary'>Duration</h1>

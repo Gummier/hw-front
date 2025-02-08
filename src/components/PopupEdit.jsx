@@ -1,11 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import SingleDropdown from "./SingleDropdown";
 
-export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
+export default function PopupEdit({ bookingId }) {
   const [isOpen, setIsOpen] = useState(false);
-  const repeat_type = ["Daily","Weekly",'Monthly'];
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    bookingName: "",
+    bookingDESC: "",
+    startTime: "",
+    endTime: "",
+    createdBy: "",
+    modifiedBy: "",
+    type: "",
+    repeatType: "",
+    repeatDay: "",
+    repeatEndDate: "",
+    buildings_buildingId: "",
+    rooms: "",
+  });
 
+  const repeat_type = ["Daily", "Weekly", "Monthly"];
   const timezone = [
     "8:30", "9:00", "9:30", "10:00", "10:30", "11:00",
     "11:30", "12:00", "12:30", "13:00", "13:30", "14:00",
@@ -24,22 +39,26 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
   ];
   const rooms = ["Room 1", "Room 2", "Room 3"];
 
-  const [formData, setFormData] = useState({
-    bookingId: "",
-    bookingName: "",
-    bookingDESC: "",
-    startTime: "2025-02-07T16:32:57.541Z",
-    endTime: "2025-02-07T16:32:57.541Z",
-    createdBy: "string",
-    modifiedBy: "",
-    type: "Daily",
-    repeatType: "EVERY_DAY",
-    repeatDay: "MONDAY",
-    repeatEndDate: "2025-08-07",
-    buildings_buildingId: initialBuilding || "",
-    rooms: initialRoom || "",
-  });
-  // Create a reusable function for the API call
+  // Fetch booking details when popup is opened
+  const fetchBookingDetails = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`https://api.example.com/bookings/${bookingId}`);
+      if (response.status === 200) {
+        setFormData(response.data); // Populate formData with the fetched booking details
+      }
+    } catch (error) {
+      console.error("Error fetching booking details:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Open popup and fetch booking details
+  const openPopup = () => {
+    setIsOpen(true);
+    fetchBookingDetails();
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,36 +69,37 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
   };
 
   const handleSubmit = async () => {
-
     try {
-      const response = await axios.post("https://jsonplaceholder.typicode.com/posts", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.put(
+        `https://api.example.com/bookings/${bookingId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      if (response.status === 201) {
-        console.log("Booking added successfully:", response.data);
-        // Handle success (e.g., clear the form or show a success message)
+      if (response.status === 200) {
+        console.log("Booking updated successfully:", response.data);
+        setIsOpen(false); // Close popup on success
       }
     } catch (error) {
-      console.error("Error adding booking:", error.response?.data || error.message);
-      // Handle error (e.g., show an error message to the user)
+      console.error("Error updating booking:", error.response?.data || error.message);
     }
   };
-
 
   return (
     <div className="flex flex-col items-center justify-center overflow-hidden">
       <button
-        onClick={() => setIsOpen(true)}
+        onClick={openPopup}
         className="bg-primary text-white py-2 px-4 rounded-md transform transition duration-300 ease-in-out hover:scale-105 hover:translate-y-1"
       >
-        Add New Booking
+        Edit Booking
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-transparent backdrop-blur-sm">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50  backdrop-blur-sm">
           <div className="bg-white p-6 rounded-lg shadow-lg">
           <form className="grid grid-cols-2 gap-4">
             <div className="flex flex-col">
@@ -191,9 +211,9 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
               <div className="flex justify-between w-full">
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="mt-4 px-4 py-2 bg-white text-secondary shadow-3xl rounded-lg font-semibold hover:bg-hover hover:scale-105 hover:transition duration-700 ease-in-out "
+                  className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg"
                 >
-                  Cancel
+                  Close
                 </button>
                 <button
                   onClick={handleSubmit}
@@ -204,6 +224,7 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
               </div>
           </div>
         </div>
+
       )}
     </div>
   );
