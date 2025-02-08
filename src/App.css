@@ -12,9 +12,11 @@
         @apply cursor-pointer;
     }
     body {
-        overflow-y: scroll;
+      overflow: auto; 
       }
-    
+    html {
+        overflow: auto !important;
+      }
   }
 
 

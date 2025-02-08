@@ -1,11 +1,12 @@
 import React from 'react'
 
-function BookingDetail() {
+function BookingDetail({booking}) {
+if(!booking) return null
+
   return (
-    <div className='bg-gray-50 h-screen pt-20 px-40'>
+    <div className='h-[40vh] pt-10 pl-10 overflow-y-auto'>
         <header className='flex justify-between mb-6'>
-            <h1 className='font-bold text-2xl'>SIT HELLO WORLD</h1>
-            <span className='font-bold text-lg'>Edit</span>
+            <h1 className='font-bold text-2xl'>{booking.bookingName}</h1>
         </header>
         <hr />
         <section className='my-10 '>

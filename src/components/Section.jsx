@@ -1,19 +1,22 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState } from 'react'
 import MyCalendar from './MyCalendar'
 import Dropdown from './Dropdown'
 import Schedule from './Schedule'
 import '../App.css'
-import { useNavigate } from 'react-router'
+import { useNavigate } from 'react-router-dom'
+import Banner from '../assets/banner_sit_hw.png'
 function Section() {
 
     const navigate = useNavigate();
     const handleClick = () => {
-        navigate("/booking")
+        navigate("/booking" , {state: {date , label , subLabel}})
     }
     useEffect(() => {
         updateDate()
     },[])
     const [date, setDate] = useState("");
+    const [label, setLabel] = useState('Select Buildings');
+    const [subLabel, setSubLabel] = useState('-');
 
     const updateDate = () => {
         const currentDate = window.MyCalendar.getDate();
@@ -32,7 +35,7 @@ function Section() {
         updateDate();
       };
   return (
-    <section className='items-center h-[170vh] bg-white'>
+    <section className='items-center min-h-screen bg-white'>
         <div className='bg-white h-28 items-center flex justify-between'  >
             <button className='mx-28' onClick={goPrev}>◀</button>
             <h1 className='text-primary text-4xl font-bold'>{date}</h1>
@@ -49,13 +52,14 @@ function Section() {
                 { label: "SIT Building (1st Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
                 { label: "SIT Building (3st Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
                 { label: "SIT Building (4st Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
-            ]}/>
+            ]} setLabel={setLabel}
+            setSubLabel={setSubLabel}/>
             </div>
         </div>
         <div className='max-w-5xl bg-white mx-auto p-4'>
             <div className='flex justify-between items-center mb-4'> 
                 <h1 className='font-black text-4xl'>Schedule</h1>
-                <p className='text-2xl'>Add New Booking <button className='bg-primary w-10 rounded-xl text-white font-bold text-3xl ' onClick={handleClick}>+</button></p>
+                
             </div>
             <Schedule/>
         </div>

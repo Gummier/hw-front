@@ -2,13 +2,16 @@ import React from 'react'
 import Nav from '../components/Nav'
 import DetailHeader from '../components/DetailHeader'
 import { useNavigate } from 'react-router'
+import { useLocation } from "react-router-dom";
 import Popup from '../components/Popup'
 function Details() {
     const navigate = useNavigate();
-
-    const handleClick = () => {
-        navigate('/booking')
-    }
+     const location = useLocation();
+      const { selectedDate, building, room } = location.state || {
+          selectedDate: null,
+          building: null,
+          room: null,
+        };
   return (
       <div className='flex-wrap justify-center items-center'>
         <Nav></Nav>
@@ -16,7 +19,7 @@ function Details() {
             <DetailHeader/>
         </div>
         <div className='flex w-screen justify-center mt-16'>
-        <Popup/>
+        <Popup initialRoom={room} initialBuilding={building} selectedDate={selectedDate}/>
         </div>
     </div>
   )

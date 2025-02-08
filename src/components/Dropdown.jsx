@@ -1,17 +1,11 @@
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
-import React, { useState } from 'react';
+import React from "react";
+import { useBooking } from "./BookingContext";
 
 export default function Dropdown({ items }) {
-  const [label, setLabel] = useState("Select Buildings");
-  const [subLabel, setSubLabel] = useState("-");
+  const { label, setLabel, subLabel, setSubLabel } = useBooking();
 
-  const changeName = (text) => {
-    setLabel(text);
-  };
-
-  const currentBuilding = items.find(item => item.label === label);
-
-  // Ensure that 'sub' is an array and safely access it
+  const currentBuilding = items.find((item) => item.label === label);
   const subcategories = Array.isArray(currentBuilding?.sub) ? currentBuilding.sub : [];
 
   return (
@@ -21,14 +15,14 @@ export default function Dropdown({ items }) {
         <MenuButton className="shadow-xl bg-white px-4 py-2 rounded-lg w-[240px] font-bold text-left">
           {label}
         </MenuButton>
-        <MenuItems className="absolute mt-2 w-[240px] bg-white shadow-lg rounded-lg p-2 z-20">
+        <MenuItems className="absolute left-0 bg-white shadow-lg border rounded-lg max-w-xs overflow-auto z-10">
           {items.map((item) => (
             <MenuItem
               key={item.label}
               as="button"
               onClick={() => {
-                changeName(item.label);
-                setSubLabel(item.sub[0]);  // Reset subLabel when category changes
+                setLabel(item.label);
+                setSubLabel(item.sub[0]); // Reset subLabel when category changes
               }}
               className="block w-full px-4 py-2 text-left hover:bg-gray-100"
             >
