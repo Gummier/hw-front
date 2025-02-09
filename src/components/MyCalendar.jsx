@@ -19,6 +19,7 @@ const MyCalendar = () => {
     fetchEvents();
     buildingRef.current = label; // Update ref whenever label changes
     roomRef.current = subLabel;  // Update ref whenever subLabel changes
+    
   }, [label, subLabel]);
 
   const handleClick = (selectedDate, building, room) => {
@@ -45,8 +46,12 @@ const MyCalendar = () => {
       //     room: subLabel,
       //   },    //API BACKEND
       // });
-
-  
+      const response = await axios.get("http://helloworld07:2048/api/bookings/AllJoinTableRoom/", {
+        params: {
+          bulidName: label, // Use the correct backend field name
+          roomName: subLabel,
+        },
+      });
       
       const mockData = [
         {
@@ -96,6 +101,7 @@ const MyCalendar = () => {
         (event) => event.building === label && event.room === subLabel
       );
 
+      
       const events = filteredEvents.map((event) => ({
         id: event.bookingId,
         calendarId: "1",
@@ -104,7 +110,6 @@ const MyCalendar = () => {
         end: new Date(event.endTime).toISOString(),
         category: "time",
       }));
-
       // Clear existing events and add new ones
       calendarRef.current.clear();
       calendarRef.current.createEvents(events);

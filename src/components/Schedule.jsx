@@ -1,5 +1,6 @@
 import React, {useState , useEffect} from 'react'
 import { useBooking } from './Bookings/BookingContext'
+import axios from 'axios';
 function Schedule() {
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const { bookings } = useBooking(); // Assume bookings come from context
@@ -51,28 +52,48 @@ function Schedule() {
 
   useEffect(() => {
     const now = new Date();
-
+    const fetchBookings = async () => {
+      try {
+        const now = new Date();
+  
+        const response = await axios.get("http://helloworld07:2048/api/bookings/AllJoinTableRoom/");
+        // console.log("API Response:", response.data); // Debug the entire response
+  
+        if (response.data && Array.isArray(response.data)) {
+          const sortedBookings = response.data
+            .filter((booking) => new Date(booking.startTime) > now) // Only future bookings
+            .sort((a, b) => new Date(a.startTime) - new Date(b.startTime)) // Sort by start time
+            .slice(0, 15)
+            .map((booking) => {
+              console.log("Booking:", booking); // Debug each booking object
+              const startDate = new Date(booking.startTime);
+              const endDate = new Date(booking.endTime);
+  
+              return {
+                date: startDate.toLocaleDateString("en-US", { day: "numeric", month: "short" }),
+                start: startDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+                end: endDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
+                title: booking.bookingName,
+                building: booking.bulidName || "Unknown Building", // Fallback if buildName is undefined
+                room: booking.roomName || "Unknown Room", // Fallback if roomName is undefined
+              };
+            });
+  
+          setUpcomingBookings(sortedBookings);
+          
+        } else {
+          console.error("Unexpected response format:", response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching bookings:", error.message);
+      }
+    };
+    
+    fetchBookings();
     // Process mockData into the format needed for rendering
-    const sortedBookings = mockData
-      .filter((booking) => new Date(booking.startTime) > now) // Only future bookings
-      .sort((a, b) => new Date(a.startTime) - new Date(b.startTime)) // Sort by start time
-      .slice(0, 15) // Limit to 15 bookings
-      .map((booking) => {
-        // Transform the booking object into the desired format
-        const startDate = new Date(booking.startTime);
-        const endDate = new Date(booking.endTime);
+   
 
-        return {
-          date: startDate.toLocaleDateString("en-US", { day: "numeric", month: "short" }),
-          start: startDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
-          end: endDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }),
-          title: booking.bookingName,
-          building: booking.building,
-          room: booking.room,
-        };
-      });
-
-    setUpcomingBookings(sortedBookings);
+    
   }, []);
   
   return (

@@ -5,7 +5,7 @@ import {motion} from 'framer-motion'
 import PopupConfirmed from "./PopupConfirm";
 export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
   const [isOpen, setIsOpen] = useState(false);
-  const repeat_type = ["Daily","Weekly",'Monthly'];
+  const repeat_type = ["Teacher","Staff",'LF',"Student"];
   const [open,setOpen] = useState(false);
 
   const timezone = [
@@ -24,7 +24,7 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
     "SIT Building (3st Floor)",
     "SIT Building (4st Floor)",
   ];
-  const rooms = ["Room 1", "Room 2", "Room 3"];
+  const rooms = [1,2,3];
 
   const [formData, setFormData] = useState({
     bookingId: "",
@@ -34,7 +34,7 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
     endTime: "2025-02-07T16:32:57.541Z",
     createdBy: "string",
     modifiedBy: "",
-    type: "Daily",
+    type: "Staff",
     repeatType: "EVERY_DAY",
     repeatDay: "MONDAY",
     repeatEndDate: "2025-08-07",
@@ -54,15 +54,32 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
   
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("https://jsonplaceholder.typicode.com/posts", formData, {
+      const requestBody = {
+        roomName: formData.buildings_buildingId,
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+        SType: formData.type,
+        fk_room: rooms.map((room) => {
+          // Ensure `room` is a string before applying `.match`
+          if (typeof room === "string") {
+            const match = room.match(/\d+/); // Extract digits
+            return match ? parseInt(match[0], 10) : null; // Convert to integer
+          }
+          return null; // Handle non-string cases
+        }),
+      };
+      const response = await axios.post("http://helloworld07:2048/api/bookings/add", requestBody, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+      
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         console.log("Booking added successfully:", response.data);
         setOpen(true);
+        console.log(response.data)
+        console.log(requestBody)
         // Handle success (e.g., clear the form or show a success message)
       }
     } catch (error) {
@@ -107,7 +124,7 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
               />
             </div>
             <div className="flex flex-col ">
-              <label htmlFor="" className="text-sm font-medium text-gray-700  mb-2">Repeat Type</label>
+              <label htmlFor="" className="text-sm font-medium text-gray-700  mb-2">Staff Type</label>
               <div className="">
             <SingleDropdown
                 items={repeat_type}
@@ -162,7 +179,7 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
               <label htmlFor="text" className="text-sm font-medium  text-gray-700 mb-1">Building</label>
               <SingleDropdown
                 items={buildings}
-                initialValue={formData.buildings_buildingId}
+                initialValue={initialBuilding}
                 onChange={(value) =>
                   setFormData((prev) => ({ ...prev, building: value }))
                 }
@@ -173,12 +190,13 @@ export default function Popup({ initialBuilding, initialRoom, selectedDate }) {
               <label htmlFor="text" className="text-sm font-medium  text-gray-700 mb-1">Room</label>
               <SingleDropdown
                 items={rooms}
-                initialValue={formData.room}
+                initialValue={initialRoom}
                 onChange={(value) =>
                   setFormData((prev) => ({ ...prev, room: value }))
                 }
               />
             </div>
+            
             <div className="flex flex-col">
               <label htmlFor="text" className="text-sm font-medium  text-gray-700 mb-1">Start</label>
               <SingleDropdown

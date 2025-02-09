@@ -8,14 +8,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Banner from '../assets/banner_sit_hw.png';
 import {motion} from 'framer-motion'
 const api = axios.create({
-  baseURL: "http://localhost:3000/api/"
+  baseURL: ""
 })
 function Home() {
 
   
 
   useEffect(() => {
-    api.get('/buildings').then(res => {
+    api.get('http://helloworld07:2048/api/bookings/AllJoinTableRoom/').then(res => {
       console.log(res.data);
     })
   },[])

@@ -45,12 +45,13 @@ function Section() {
             <div className='flex justify-center items-center'>
             <Dropdown items={[
                 { label: "CB2", sub: ["Room 1","Room 2","Room 3"] },
-                { label: "LX Building (10th Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
+                { label: "LX Building (10th Floor)", sub: ["LX10/2","LX10/3" , "LX10/4"] },
                 { label: "LX Building (11th Floor)", sub: ["Room 1","Room 2" , "Room 3"]},
-                { label: "LX Building (12th Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
+                { label: "LX Building (12th Floor)", sub: ["LX11/2","LX11/3" , "LX12/4"] },
                 { label: "SIT Building (1st Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
                 { label: "SIT Building (3st Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
                 { label: "SIT Building (4st Floor)", sub: ["Room 1","Room 2" , "Room 3"] },
+                { label: "CBชั้น3 ", sub: ["CB05","CB02"] },
                 ]} setLabel={setLabel}
                 setSubLabel={setSubLabel}/>
             </div>
